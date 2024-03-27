@@ -2,12 +2,17 @@ package fr.epita.adroidclass4
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.View.OnClickListener
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,6 +53,17 @@ class MainActivity : AppCompatActivity() {
                                 "Number of results : "+ data.size,
                                 Toast.LENGTH_SHORT)
                                 .show()
+                            val todolistRecyclerview : RecyclerView = findViewById(R.id.recyclerView_todo)
+                            todolistRecyclerview.layoutManager = LinearLayoutManager(
+                                this@MainActivity
+                            )
+                            val onItemClickListener : OnClickListener = object : OnClickListener {
+                                override fun onClick(clickView: View?) {
+                                    val item = data[clickView!!.tag as Int]
+                                    Toast.makeText(this@MainActivity,"User : "+item.userId, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            todolistRecyclerview.adapter = ToDoListAdapter(data, this@MainActivity, onItemClickListener)
                         }
                     }
                     else {
